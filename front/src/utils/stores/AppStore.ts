@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx'
-class ObjectsStore{
+class AppStore{
 
-    private _objects: object[];
+    private _applications: object[];
     private _meta: object;
 
 
@@ -10,12 +10,12 @@ class ObjectsStore{
         makeAutoObservable(this)
     }
 
-    public getObjects(){
-        return this._objects;
+    public getApplications(){
+        return this._applications;
     }
 
-    public setObjects(objects: object[]){
-        this._objects = objects;
+    public setApplications(applications: object[]){
+        this._applications = applications;
     }
 
     public getMeta(){
@@ -29,4 +29,4 @@ class ObjectsStore{
 
 }
 
-export default new ObjectsStore()
+export default new AppStore()

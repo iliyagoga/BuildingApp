@@ -7,17 +7,18 @@ const Router = ()=>{
             path={routes.manager.mean}
             element={<Manager></Manager>}
         >
-            <Route
-                path={routes.manager.objects}
-                element={<Manager></Manager>}
-            >
-            </Route>
-            <Route
-                path={routes.manager.appls}
-                element={<Manager></Manager>}
-            >
-            </Route>
         </Route>
+        <Route
+            path={routes.manager.mean+routes.manager.objects}
+            element={<Manager mode="objects"></Manager>}
+        >
+        </Route>
+        <Route
+            path={routes.manager.mean+routes.manager.appls}
+            element={<Manager mode="appls"></Manager>}
+        >
+        </Route>
+
 
     </Routes>
 }
