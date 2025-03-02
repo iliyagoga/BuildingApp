@@ -47,13 +47,31 @@ class Api {
                 email,
                 date,
                 status:"added",
-                id_object:object
+                object_id:object
             })
-            return 
+            if (res.status>=200 && res.status<300){
+                const link=Math.random().toString(36).substring(2, 12);
+                await axios.post(this.hostName+list.links,{
+                    link,
+                    app_id: res.data.id
+                })
+                return link;
+            }
         } catch (error) {
             
         }
     }
+
+    public async getApplicationByLink(link:string){
+        try {
+            const res = await axios.get(this.hostName+list.links+'?link='+link);
+            const app= await axios.get(this.hostName+ list.applications+"/"+res.data[0].app_id+"?_relations=objects")
+            return app.data;
+        } catch (error) {
+            
+        }
+    }
+
 
 
     

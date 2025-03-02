@@ -6,7 +6,6 @@ import routes from "../utils/routes.ts";
 import Applications from "../components/Applications.jsx";
 const Manager=observer(({mode})=>{
     const nav= useNavigate()
-    console.log(mode)
     return <>
     <AppBar sx={{position:"static"}} component={Paper}>
         <Toolbar sx={{display: "flex", gap:"10px"}}>

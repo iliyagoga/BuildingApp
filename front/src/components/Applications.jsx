@@ -58,7 +58,7 @@ const Applications = observer(()=>{
                     </MenuItem>
                 </Select>
             </TableCell>
-            <TableCell >{el.id_object}</TableCell>
+            <TableCell >{el.object_id}</TableCell>
           </TableRow>
         })}
       </TableBody>

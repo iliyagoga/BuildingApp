@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import routes from "./utils/routes.ts"
 import Manager from "./pages/Manager.jsx"
 import User from "./pages/User.jsx"
+import Link from "./pages/Link.jsx"
 const Router = ()=>{
     return <Routes>
         <Route 
@@ -22,6 +23,11 @@ const Router = ()=>{
         <Route
             path={routes.user.mean}
             element={<User></User>}
+        >
+        </Route>
+        <Route
+            path={routes.link.mean+"/:link"}
+            element={<Link></Link>}
         >
         </Route>
     </Routes>
