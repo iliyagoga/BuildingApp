@@ -39,6 +39,22 @@ class Api {
         }
     }
 
+    public async createApplication(title:string, description: string, email: string, date:string, object: number){
+        try {
+            const res = await axios.post(this.hostName+list.applications, {
+                title,
+                description,
+                email,
+                date,
+                status:"added",
+                id_object:object
+            })
+            return 
+        } catch (error) {
+            
+        }
+    }
+
 
     
 }
