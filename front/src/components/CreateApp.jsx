@@ -13,6 +13,7 @@ const CreateApp = observer(()=>{
     const [email, setEmail]=useState("")
     const [date, setDate]=useState("")
     const [select, setSelect]=useState("")
+    const [file, setFile]=useState(null)
 
     const [page,setPage]=useState(1)
 
@@ -70,14 +71,16 @@ const CreateApp = observer(()=>{
         label="Почта">
 
         </TextField>
+        
+        <InputLabel id="date">Дата подачи</InputLabel>
         <TextField
+        labelId="date"
         error={vDate?true:false}
         helperText={vDate&&"Не заполнено"}
         value={date}
         onChange={(e)=>{setDate(e.target.value)}}
         type="date"
-        label="Дата подачи">
-
+        >
         </TextField>
         <FormControl>
             <InputLabel id="select">Объект</InputLabel>
@@ -88,24 +91,38 @@ const CreateApp = observer(()=>{
             onChange={(e)=>{setSelect(e.target.value)}}
             value={select}>
                 {ObjectsStore.getObjects()!=undefined&&ObjectsStore.getObjects().map((e,i)=>{
-                    return <MenuItem value={e.id} key={e.id}>
-                        {e.title}
-                    </MenuItem>
+                    if(i+1>10*(page-1) && i+1<=10*(page)){
+                        return <MenuItem value={e.id} key={e.id}>
+                            {e.title}
+                        </MenuItem>
+                    }
                 })}
                 <Container sx={{display:"flex"}}>
                     <Button onClick={()=>{setSelect("")}}sx={{fontSize:"12px"}}>Очистить</Button>
-                    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={ObjectsStore.getMeta()!=undefined&&ObjectsStore.getMeta().total_pages} page={page} onChange={handleChange} />
+                    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={ObjectsStore.getObjects()!=undefined?Math.ceil(ObjectsStore.getObjects().length/10):1} page={page} onChange={handleChange} />
                 </Container>
                    
             </Select>
             {vSelect&&<FormHelperText error>Не заполнено</FormHelperText>}
         </FormControl>
+
+            <InputLabel id="file">Загрузить файл</InputLabel>
+            <TextField
+            onChange={(e)=>{
+                setFile(e.target.files[0])}}
+            labelId="file"
+            type="file"
+            inputProps={{accept: '.jpg, .jpeg, .png'}}
+            >
+
+            </TextField>
+        
     
 
         <Button onClick={()=>{
             const errors=AppValidator(title,description,email,date, select);
             if(errors===false){
-                API.createApplication(title,description,email,date, select).then((res)=>{nav(routes.link.mean+"/"+res)})
+                API.createApplication(title,description,email,date, select,file).then((res)=>{nav(routes.link.mean+"/"+res)})
             }
             else{
                 if(errors['title']!=undefined){

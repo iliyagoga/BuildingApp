@@ -8,7 +8,8 @@ const routes={
     user:{
         mean:'/user',
         register:'/register',
-        login:'/login'
+        login:'/login',
+        applications:"/applications_user"
     },
     link:{
         mean:"/links"

@@ -6,8 +6,9 @@ import '@fontsource/roboto/700.css';
 import { useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
-import { Button, FormControl, FormLabel, InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField } from "@mui/material";
+import { Button, FormControl, FormLabel, InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField, Typography } from "@mui/material";
 import AppStore from "../utils/stores/AppStore.ts";
+import { Link } from "react-router-dom";
 const Applications = observer(()=>{
 
   const [orderBy, setOrderBy]= useState(null)
@@ -126,7 +127,7 @@ const Applications = observer(()=>{
         </TableCell>
         <TableCell >
           <Button onClick={()=>{
-            API.getApplicationsByFilter(fId,fTitle,fDescr,fEmail, fDate, fStatus)
+            API.getApplicationsByFilter(fId,fTitle,fDescr,fEmail, fDate, fStatus, fObject)
           }}>Поиск</Button>
         </TableCell>
         </TableRow>
@@ -194,12 +195,15 @@ const Applications = observer(()=>{
                 Объект
               </TableSortLabel>
             </TableCell>
-
+            <TableCell >
+                Файл
+            </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {AppStore.getApplications()!=undefined&&AppStore.getApplications().map((el,i)=>{
-          return <TableRow key={"a"+i}>
+          if(i+1>5*(page-1) && i+1<=5*(page)){
+            return <TableRow key={"a"+i}>
             <TableCell >{el.id}</TableCell>
             <TableCell >{el.title}</TableCell>
             <TableCell >{el.description}</TableCell>
@@ -223,11 +227,14 @@ const Applications = observer(()=>{
                 </Select>
             </TableCell>
             <TableCell >{el.object.title}</TableCell>
+            <TableCell >{el.file?<a target="_blank" href={el.file}>{el.file.substring(0,10)}...</a>:<Typography>Нет</Typography>}</TableCell>
           </TableRow>
+          }
+         
         })}
       </TableBody>
     </Table>
-    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={AppStore.getApplications()!=undefined?Math.round(AppStore.getApplications().length/5):1} page={page} onChange={handleChange} />
+    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={AppStore.getApplications()!=undefined?Math.ceil(AppStore.getApplications().length/5):1} page={page} onChange={handleChange} />
   </TableContainer>
 })
 

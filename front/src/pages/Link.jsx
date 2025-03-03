@@ -25,6 +25,7 @@ const Link = observer(()=>{
             <TableCell>Дата подачи</TableCell>
             <TableCell >Статус</TableCell>
             <TableCell >Объект</TableCell>
+            <TableCell >Файл</TableCell>
             </TableRow>
         </TableHead>
         <TableBody>
@@ -43,6 +44,7 @@ const Link = observer(()=>{
                     </Select>
                     </TableCell>
                 <TableCell >{data.object.title}</TableCell>
+                <TableCell >{data.file?<a target="_blank" href={data.file}>{data.file.substring(0,10)}...</a>:<Typography>Нет</Typography>}</TableCell>
             </>}
             
             </TableRow>

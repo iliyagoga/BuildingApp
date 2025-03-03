@@ -4,7 +4,10 @@ const list ={
     applications: "/applications",
     links: "/links",
     register:"/register",
-    login:"/auth"
+    login:"/auth",
+    upload:"/uploads",
+    authme:'/auth_me',
+    applications_users:"/applications_users"
 }
 
 export default list

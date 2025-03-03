@@ -6,9 +6,8 @@ import '@fontsource/roboto/700.css';
 import { useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
-import { Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { Button, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField } from "@mui/material";
 import ObjectsStore from "../utils/stores/ObjectsStore.ts";
-import { set } from "mobx";
 const Objects = observer(()=>{
   const [orderBy, setOrderBy]= useState(null)
   const [order,setOrder]= useState('asc')
@@ -45,9 +44,61 @@ const Objects = observer(()=>{
     API.getObjects()
   },[])
 
+  const [fId,setFID]=useState(null)
+  const [fTitle, setFTitle]=useState(null)
+  const [fAddress,setFAddress]=useState(null)
+  const [fDate,setFDate]=useState(null)
+  const [fCount,setFCount]=useState(null)
+
     return   <TableContainer component={Paper} sx={{mt:"1rem", height:"max-content"}}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
       <TableHead>
+      <TableRow>
+        <TableCell >
+          <TextField
+          label="ID"
+          value={fId}
+          onChange={(e)=>{setFID(e.target.value)}}>
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Название"
+          value={fTitle}
+          onChange={(e)=>{setFTitle(e.target.value)}}>
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Адрес"
+          value={fAddress}
+          onChange={(e)=>{setFAddress(e.target.value)}}
+          >
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Дата"
+          value={fDate}
+          onChange={(e)=>{setFDate(e.target.value)}}
+          >
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Количество заявок"
+          value={fCount}
+          onChange={(e)=>{setFCount(e.target.value)}}
+          >
+
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <Button onClick={()=>{
+            API.getObjectsByFilter(fId,fTitle,fAddress, fDate,  fCount)
+          }}>Поиск</Button>
+        </TableCell>
+        </TableRow>
         <TableRow>
     
           <TableCell>
@@ -88,9 +139,9 @@ const Objects = observer(()=>{
             </TableCell>
           <TableCell >
           <TableSortLabel 
-          active={orderBy === 'object'}
-          direction={orderBy === 'object' ? order : 'asc'}
-          onClick={()=>{orderFunction('object')}}
+          active={orderBy === 'count'}
+          direction={orderBy === 'count' ? order : 'asc'}
+          onClick={()=>{orderFunction('count')}}
           >
             Количество поданных заявок
             </TableSortLabel>
@@ -99,16 +150,19 @@ const Objects = observer(()=>{
       </TableHead>
       <TableBody>
         {ObjectsStore.getObjects()!=undefined&&ObjectsStore.getObjects().map((el,i)=>{
-          return <TableRow key={"o"+i}>
-            <TableCell >{el.id}</TableCell>
-            <TableCell >{el.title}</TableCell>
-            <TableCell >{el.address}</TableCell>
-            <TableCell >{el.date}</TableCell>
-          </TableRow>
+          if(i+1>5*(page-1) && i+1<=5*(page)){
+            return <TableRow key={"o"+i}>
+              <TableCell >{el.id}</TableCell>
+              <TableCell >{el.title}</TableCell>
+              <TableCell >{el.address}</TableCell>
+              <TableCell >{el.date}</TableCell>
+              <TableCell >{el.count>0?el.count:0}</TableCell>
+            </TableRow>
+          }
         })}
       </TableBody>
     </Table>
-    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={ObjectsStore.getMeta()!=undefined&&ObjectsStore.getMeta().total_pages} page={page} onChange={handleChange} />
+    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={ObjectsStore.getObjects()!=undefined?Math.ceil(ObjectsStore.getObjects().length/5):1} page={page} onChange={handleChange} />
   </TableContainer>
 })
 

@@ -5,6 +5,7 @@ import User from "./pages/User.jsx"
 import Link from "./pages/Link.jsx"
 import Register from "./pages/Register.jsx"
 import Login from "./pages/Login.jsx"
+import Profile from "./pages/Profile.jsx"
 const Router = ()=>{
     return <Routes>
         <Route 
@@ -42,6 +43,12 @@ const Router = ()=>{
         <Route
             path={routes.user.login}
             element={<Login></Login>}
+        >
+        </Route>
+
+        <Route
+            path={routes.user.applications}
+            element={<Profile></Profile>}
         >
         </Route>
 

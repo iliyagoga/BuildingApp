@@ -3,22 +3,68 @@ import list from "./apiLIst.ts";
 import ObjectsStore from "./stores/ObjectsStore.ts";
 import AppStore from "./stores/AppStore.ts";
 import Applications from "../components/Applications.jsx";
+import getCookie from "./functions/getCookie.ts";
+import PrivateLinksStore from "./stores/PrivateLinksStore.ts";
 class Api {
     private hostName:string="";
 
     constructor(hostName){
         this.hostName=hostName;
     }
-    public async getObjects(page: number = 1,limit:number=10){
+    public async getObjects(){
         try {
-           const res = await axios.get(this.hostName+list.object+"?page="+page+"&limit="+limit) 
-           ObjectsStore.setObjects(res.data.items)
-           ObjectsStore.setMeta(res.data.meta)
+           let res:any = await axios.get(this.hostName+list.object)           
+            await this.getApplications()
+            const appls= AppStore.getApplications()
+            res.data.map((obj,i)=>{
+                const count=appls.filter(item=>item['object']['id']===obj.id).length
+
+                res.data[i].count=count
+            })
+           ObjectsStore.setObjects(res.data)
            return true
         } catch (error) {
             
         }
     };
+
+    public async getObjectsByFilter(id:string, title:string, address: string, date:string, count:string, ){
+        try {
+            let body:any[]=[]
+            if(id!=null && id.length>0){
+                body.push('id='+id+"*");
+            }
+            if(title!=null && title.length>0){
+                body.push('title='+title+"*");
+            }
+            if(address!=null && address.length>0){
+                body.push('address='+address+"*");
+            }
+            if(date!=null && date.length>0){
+                body.push('date='+date+"*");
+            }
+            const str =body.join("&")
+            const res:any = await axios.get(this.hostName+list.object+"?"+str)
+            await this.getApplications()
+            const appls= AppStore.getApplications()
+            res.data.map((obj,i)=>{
+                const count=appls.filter(item=>item['object']['id']===obj.id).length
+
+                res.data[i].count=count
+            })
+            console.log(res.data)
+            if(count!=null && count.length>0){
+                
+                ObjectsStore.setObjects(res.data.filter(item=>Number(item.count)===Number(count)))
+            }else{
+                ObjectsStore.setObjects(res.data)
+            }
+           
+
+        } catch (error) {
+            throw error;
+        }
+    }
 
     public async getApplications(){
         try {
@@ -39,24 +85,34 @@ class Api {
         }
     }
 
-    public async createApplication(title:string, description: string, email: string, date:string, object: number){
+    public async createApplication(title:string, description: string, email: string, date:string, object: number, file: File){
         try {
-            const res = await axios.post(this.hostName+list.applications, {
-                title,
-                description,
-                email,
-                date,
-                status:"added",
-                object_id:object
-            })
-            if (res.status>=200 && res.status<300){
-                const link=Math.random().toString(36).substring(2, 12);
-                await axios.post(this.hostName+list.links,{
-                    link,
-                    app_id: res.data.id
+            const formdata = new FormData();
+            formdata.append('file',file);
+            console.log(file)
+            const upload = await axios.post(this.hostName+list.upload,formdata
+            )
+
+            if(upload.status>200 && upload.status<300){
+                const res = await axios.post(this.hostName+list.applications, {
+                    title,
+                    description,
+                    email,
+                    date,
+                    status:"added",
+                    object_id:object,
+                    file: upload.data.url
                 })
-                return link;
+                if (res.status>=200 && res.status<300){
+                    const link=Math.random().toString(36).substring(2, 12);
+                    await axios.post(this.hostName+list.links,{
+                        link,
+                        app_id: res.data.id
+                    })
+                    return link;
+                }
             }
+            
         } catch (error) {
             
         }
@@ -72,7 +128,7 @@ class Api {
         }
     }
 
-    public async getApplicationsByFilter(id:string, title:string, description: string, email: string, date:string, status:string, object: number){
+    public async getApplicationsByFilter(id:string, title:string, description: string, email: string, date:string, status:string, object: string){
         try {
             let body:any[]=[]
             if(id!=null && id.length>0){
@@ -94,9 +150,22 @@ class Api {
                 body.push('status='+status);
             }
             const str =body.join("&")
+            const res:any = await axios.get(this.hostName+list.applications+"?_relations=objects&"+str)
+            if(object!=null && object.length>0){
+                let apps:any=[]
+                const regex = new RegExp(`^${object}.*`)
+                for(let elem of res.data){
+                    console.log(elem)
+                    if(regex.test(elem.object.title)){
+                        apps.push(elem)
+                    }
+                }
+                AppStore.setApplications(apps)
+            }else{
+                AppStore.setApplications(res.data)
+            }
+           
 
-            const res = await axios.get(this.hostName+list.applications+"?"+str+"&_relations=objects")
-            AppStore.setApplications(res.data)
         } catch (error) {
             throw error;
         }
@@ -131,6 +200,27 @@ class Api {
             if(error.response.data.message ==="RESOURCE_INVALID_LOGIN_OR_PASSWORD"){
                 throw {message:"Неверные данные"}
             }
+        }
+    }
+
+    public async checkUser(){
+       try {
+        const token=(getCookie('token'))
+        const res = await axios.get(this.hostName+list.authme,{headers:{Authorization:"Bearer "+token}})
+        return res.data.email
+       } catch (error) {
+        throw false
+       }
+    }
+
+    public async getPrivateLinks(email:string){
+        try {
+            const token=(getCookie('token'))
+            const res = await axios.get(this.hostName+list.applications_users+"?_relations=links&email="+email,{headers:{Authorization:"Bearer "+token}})
+            PrivateLinksStore.setLinks(res.data);
+
+        } catch (error) {
+            
         }
     }
 
