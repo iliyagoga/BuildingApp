@@ -4,7 +4,7 @@ const list ={
     applications: "/applications",
     links: "/links",
     register:"/register",
-    login:"/login"
+    login:"/auth"
 }
 
 export default list

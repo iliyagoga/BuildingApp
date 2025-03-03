@@ -88,6 +88,22 @@ class Api {
         }
     }
 
+    public async login(email:string, pass:string){
+        try {
+            const res =await axios.post(this.hostName+list.login,JSON.stringify({
+                email,
+                password:pass
+            }), {headers:{Accept:"application/json","Content-Type":"application/json"}})
+            document.cookie = "token="+res.data['token'];
+            return true;
+        } catch (error) {
+
+            if(error.response.data.message ==="RESOURCE_INVALID_LOGIN_OR_PASSWORD"){
+                throw {message:"Неверные данные"}
+            }
+        }
+    }
+
 
 
     

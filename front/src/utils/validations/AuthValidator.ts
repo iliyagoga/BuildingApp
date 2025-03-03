@@ -1,8 +1,6 @@
-function RegValidator(login:string, email:string, pass:string, repass: string){
+function AuthValidator(email:string, pass:string){
     let errors: object={}
-    if(login.length==0){
-        errors['login']="Заполните";
-    }
+
     if(email.length==0){
         errors['email']="Заполните";
     }
@@ -12,10 +10,6 @@ function RegValidator(login:string, email:string, pass:string, repass: string){
     if(pass.length<8){
         errors['pass']="Пароль должен быть больше 8 символов";
     }
-    if(pass!=repass){
-        errors['pass']="пароли не совпадают";
-        errors['repass']="пароли не совпадают";
-    }
     if(Object.entries(errors).length>0){
         return errors
     }
@@ -23,4 +17,4 @@ function RegValidator(login:string, email:string, pass:string, repass: string){
    
 }
 
-export default RegValidator
+export default AuthValidator

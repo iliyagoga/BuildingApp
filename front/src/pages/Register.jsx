@@ -28,7 +28,7 @@ const Register = observer(()=>{
             display:"flex", 
             flexDirection:"column"
         }}>
-        <Typography>Регитстрация</Typography>
+        <Typography>Регистрация</Typography>
         <TextField
             value={login}
             onChange={(e)=>{
@@ -70,7 +70,7 @@ const Register = observer(()=>{
         <Button onClick={()=>{
              const errors=RegValidator(login, email, pass, repass);
              if(errors===false){
-                 API.register(login,email,pass).then(nav(routes.user.mean)).catch(error=>{
+                 API.register(login,email,pass).then(()=>{nav(routes.user.mean)}).catch(error=>{
                     setError(error.message)
                     setTimeout(() => {
                         setError(false)

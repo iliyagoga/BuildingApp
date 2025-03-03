@@ -4,6 +4,7 @@ import Manager from "./pages/Manager.jsx"
 import User from "./pages/User.jsx"
 import Link from "./pages/Link.jsx"
 import Register from "./pages/Register.jsx"
+import Login from "./pages/Login.jsx"
 const Router = ()=>{
     return <Routes>
         <Route 
@@ -35,6 +36,12 @@ const Router = ()=>{
         <Route
             path={routes.user.register}
             element={<Register></Register>}
+        >
+        </Route>
+
+        <Route
+            path={routes.user.login}
+            element={<Login></Login>}
         >
         </Route>
 
