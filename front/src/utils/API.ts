@@ -2,6 +2,7 @@ import axios from "axios"
 import list from "./apiLIst.ts";
 import ObjectsStore from "./stores/ObjectsStore.ts";
 import AppStore from "./stores/AppStore.ts";
+import Applications from "../components/Applications.jsx";
 class Api {
     private hostName:string="";
 
@@ -19,11 +20,10 @@ class Api {
         }
     };
 
-    public async getApplications(page: number = 1,limit:number=10){
+    public async getApplications(){
         try {
-           const res = await axios.get(this.hostName+list.applications+"?page="+page+"&limit="+limit) 
-           AppStore.setApplications(res.data.items)
-           AppStore.setMeta(res.data.meta)
+           const res = await axios.get(this.hostName+list.applications+"?_relations=objects") 
+           AppStore.setApplications(res.data)
            return true
         } catch (error) {
             
@@ -69,6 +69,36 @@ class Api {
             return app.data;
         } catch (error) {
             
+        }
+    }
+
+    public async getApplicationsByFilter(id:string, title:string, description: string, email: string, date:string, status:string, object: number){
+        try {
+            let body:any[]=[]
+            if(id!=null && id.length>0){
+                body.push('id='+id+"*");
+            }
+            if(title!=null && title.length>0){
+                body.push('title='+title+"*");
+            }
+            if(description!=null && description.length>0){
+                body.push('description='+description+"*");
+            }
+            if(email!=null && email.length>0){
+                body.push('email='+email+"*");
+            }
+            if(date!=null && date.length>0){
+                body.push('date='+date+"*");
+            }
+            if(status!=null && status.length>0 && status!="null" ){
+                body.push('status='+status);
+            }
+            const str =body.join("&")
+
+            const res = await axios.get(this.hostName+list.applications+"?"+str+"&_relations=objects")
+            AppStore.setApplications(res.data)
+        } catch (error) {
+            throw error;
         }
     }
 

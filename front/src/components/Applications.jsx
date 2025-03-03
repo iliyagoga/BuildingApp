@@ -6,7 +6,7 @@ import '@fontsource/roboto/700.css';
 import { useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
-import { InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { Button, FormControl, FormLabel, InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField } from "@mui/material";
 import AppStore from "../utils/stores/AppStore.ts";
 const Applications = observer(()=>{
 
@@ -34,7 +34,7 @@ const Applications = observer(()=>{
 
   const [page,setPage]=useState(1)
   const handleChange = (event, value) => {
-    API.getApplications(value);
+    API.getApplications();
     setPage(value);
     setOrderBy(null)
     setOrder('asc')
@@ -44,9 +44,92 @@ const Applications = observer(()=>{
     API.getApplications()
   },[])
 
+  const [fId,setFID]=useState(null)
+  const [fTitle, setFTitle]=useState(null)
+  const [fDescr,setFDescr]=useState(null)
+  const [fEmail, setFEmail]=useState(null)
+  const [fDate,setFDate]=useState(null)
+  const [fStatus,setFStatus]=useState(null)
+  const [fObject,setDObject]=useState(null)
+
     return   <TableContainer component={Paper} sx={{mt:"1rem", height:"max-content"}}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
       <TableHead>
+        <TableRow>
+        <TableCell >
+          <TextField
+          label="ID"
+          value={fId}
+          onChange={(e)=>{setFID(e.target.value)}}>
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Название"
+          value={fTitle}
+          onChange={(e)=>{setFTitle(e.target.value)}}>
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Описание"
+          value={fDescr}
+          onChange={(e)=>{setFDescr(e.target.value)}}
+          >
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Почта"
+          value={fEmail}
+          onChange={(e)=>{setFEmail(e.target.value)}}
+          >
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Дата"
+          value={fDate}
+          onChange={(e)=>{setFDate(e.target.value)}}
+          >
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <FormControl sx={{width:"100%"}}>
+            <InputLabel is="st">Статус</InputLabel>
+          <Select
+          sx={{width:"100%"}}
+          labelId="st"
+          label="Статус"
+          value={fStatus}
+          onChange={(e)=>{setFStatus(e.target.value)}}
+          >
+            <MenuItem value="null"> None
+            </MenuItem>
+            <MenuItem value="added">Добавлена
+            </MenuItem>
+            <MenuItem value="process">В процессе
+            </MenuItem>
+            <MenuItem value="closed">Закрыта
+            </MenuItem>
+          </Select>
+          </FormControl>
+        </TableCell>
+        <TableCell >
+          <TextField
+          label="Объект"
+          value={fObject}
+          onChange={(e)=>{setDObject(e.target.value)}}
+          >
+
+          </TextField>
+        </TableCell>
+        <TableCell >
+          <Button onClick={()=>{
+            API.getApplicationsByFilter(fId,fTitle,fDescr,fEmail, fDate, fStatus)
+          }}>Поиск</Button>
+        </TableCell>
+        </TableRow>
         <TableRow>
           <TableCell >
             <TableSortLabel
@@ -139,12 +222,12 @@ const Applications = observer(()=>{
                     </MenuItem>
                 </Select>
             </TableCell>
-            <TableCell >{el.object_id}</TableCell>
+            <TableCell >{el.object.title}</TableCell>
           </TableRow>
         })}
       </TableBody>
     </Table>
-    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={AppStore.getMeta()!=undefined&&AppStore.getMeta().total_pages} page={page} onChange={handleChange} />
+    <Pagination sx={{my:"10px", display:"flex", justifyContent: "center"}} count={AppStore.getApplications()!=undefined?Math.round(AppStore.getApplications().length/5):1} page={page} onChange={handleChange} />
   </TableContainer>
 })
 
