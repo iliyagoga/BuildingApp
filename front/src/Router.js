@@ -3,6 +3,7 @@ import routes from "./utils/routes.ts"
 import Manager from "./pages/Manager.jsx"
 import User from "./pages/User.jsx"
 import Link from "./pages/Link.jsx"
+import Register from "./pages/Register.jsx"
 const Router = ()=>{
     return <Routes>
         <Route 
@@ -30,6 +31,14 @@ const Router = ()=>{
             element={<Link></Link>}
         >
         </Route>
+
+        <Route
+            path={routes.user.register}
+            element={<Register></Register>}
+        >
+        </Route>
+
+  
     </Routes>
 }
 

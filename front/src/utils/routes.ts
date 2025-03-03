@@ -1,5 +1,5 @@
 const routes={
-    host:"localhost:3000",
+    host:"http://localhost:3000",
     manager: {
         mean:"/manager",
         objects: "/objects",
@@ -7,6 +7,8 @@ const routes={
     },
     user:{
         mean:'/user',
+        register:'/register',
+        login:'/login'
     },
     link:{
         mean:"/links"
