@@ -36,8 +36,6 @@ const Applications = observer(()=>{
   const [page,setPage]=useState(1)
   const handleChange = (event, value) => {
     setPage(value);
-    setOrderBy(null)
-    setOrder('asc')
   };
 
   useEffect(()=>{
