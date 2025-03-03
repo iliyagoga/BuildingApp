@@ -35,7 +35,6 @@ const Applications = observer(()=>{
 
   const [page,setPage]=useState(1)
   const handleChange = (event, value) => {
-    API.getApplications();
     setPage(value);
     setOrderBy(null)
     setOrder('asc')
@@ -127,6 +126,7 @@ const Applications = observer(()=>{
         </TableCell>
         <TableCell >
           <Button onClick={()=>{
+            setPage(1)
             API.getApplicationsByFilter(fId,fTitle,fDescr,fEmail, fDate, fStatus, fObject)
           }}>Поиск</Button>
         </TableCell>

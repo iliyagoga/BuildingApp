@@ -34,7 +34,6 @@ const Objects = observer(()=>{
 
   const [page,setPage]=useState(1)
   const handleChange = (event, value) => {
-    API.getObjects(value);
     setPage(value);
     setOrderBy(null)
     setOrder('asc')
@@ -95,6 +94,7 @@ const Objects = observer(()=>{
         </TableCell>
         <TableCell >
           <Button onClick={()=>{
+            setPage(1)
             API.getObjectsByFilter(fId,fTitle,fAddress, fDate,  fCount)
           }}>Поиск</Button>
         </TableCell>

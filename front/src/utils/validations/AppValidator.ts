@@ -9,6 +9,9 @@ function AppValidator(title: string, description:string, email: string, date: st
     if(email.length==0){
         errors['email']=true
     }
+    if(!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/.test(email))){
+        errors['email']=true;
+    }
     if(date.length==0){
         errors['date']=true
     }

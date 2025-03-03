@@ -64,7 +64,7 @@ const CreateApp = observer(()=>{
         </TextField>
         <TextField
         error={vEmail?true:false}
-        helperText={vEmail&&"Не заполнено"}
+        helperText={vEmail&&"Не заполнено или неправильный формат"}
         value={email}
         onChange={(e)=>{setEmail(e.target.value)}}
         type="email"

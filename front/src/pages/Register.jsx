@@ -44,6 +44,7 @@ const Register = observer(()=>{
                 setEmail(e.target.value)
             }}
             label="Почта"
+            type="email"
             error={vEmail?true:false}
             helperText={vEmail&&vEmail}
         ></TextField>

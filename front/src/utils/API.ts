@@ -52,7 +52,6 @@ class Api {
 
                 res.data[i].count=count
             })
-            console.log(res.data)
             if(count!=null && count.length>0){
                 
                 ObjectsStore.setObjects(res.data.filter(item=>Number(item.count)===Number(count)))
@@ -87,12 +86,11 @@ class Api {
 
     public async createApplication(title:string, description: string, email: string, date:string, object: number, file: File){
         try {
+           if(file){
             const formdata = new FormData();
             formdata.append('file',file);
-            console.log(file)
             const upload = await axios.post(this.hostName+list.upload,formdata
             )
-
             if(upload.status>200 && upload.status<300){
                 const res = await axios.post(this.hostName+list.applications, {
                     title,
@@ -112,6 +110,31 @@ class Api {
                     return link;
                 }
             }
+           }else{
+            const res = await axios.post(this.hostName+list.applications, {
+                title,
+                description,
+                email,
+                date,
+                status:"added",
+                object_id:object,
+                file: ""
+            })
+            if (res.status>=200 && res.status<300){
+                const link=Math.random().toString(36).substring(2, 12);
+                await axios.post(this.hostName+list.links,{
+                    link,
+                    app_id: res.data.id
+                })
+                const check=await this.checkUser();
+                if(check){
+                    const token=(getCookie('token'))
+                    await axios.post(this.hostName+list.applications_users,{email:check, link_id:res.data.id},{headers:{Authorization:"Bearer "+token}})
+                }
+               
+                return link;
+            }
+           }
             
         } catch (error) {
             

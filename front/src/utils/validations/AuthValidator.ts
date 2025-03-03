@@ -4,6 +4,9 @@ function AuthValidator(email:string, pass:string){
     if(email.length==0){
         errors['email']="Заполните";
     }
+    if(!(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/.test(email))){
+        errors['email']="Неверный формат почты";
+    }
     if(pass.length==0){
         errors['pass']="Заполните";
     }

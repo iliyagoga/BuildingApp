@@ -1,4 +1,4 @@
-import { Pagination, Paper, Table, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
+import { Button, Pagination, Paper, Table, TableCell, TableHead, TableRow, TableSortLabel } from "@mui/material";
 import { observer } from "mobx-react-lite";
 import { useEffect, useState } from "react";
 import API from "../utils/API.ts";
@@ -34,6 +34,7 @@ const Profile = observer(()=>{
     return <>
     {auth&&
      <Paper sx={{maxWidth:420,m:"auto"}}>
+        <Button onClick={(e)=>{document.cookie="token="}}>Выйти</Button>
      <Table>
      <TableHead>
          <TableRow>
