@@ -75,7 +75,7 @@ class Api {
         }
     };
 
-    public async updateApplication(id:number,status:string){
+    public async updateApplication(id:string,status:string){
         try {
             const res = await axios.patch(this.hostName+list.applications+"/"+id,{status})
             return true
@@ -84,7 +84,7 @@ class Api {
         }
     }
 
-    public async createApplication(title:string, description: string, email: string, date:string, object: number, file: File){
+    public async createApplication(title:string, description: string, email: string, date:string, object: string, file: File|null){
         try {
            if(file){
             const formdata = new FormData();

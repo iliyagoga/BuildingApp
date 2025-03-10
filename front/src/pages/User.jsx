@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import CreateApp from "../components/CreateApp";
+import CreateApp from "../components/CreateApp.tsx";
 import { Box, Paper, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import routes from "../utils/routes.ts";

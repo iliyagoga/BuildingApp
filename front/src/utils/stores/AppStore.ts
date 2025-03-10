@@ -1,7 +1,18 @@
 import {makeAutoObservable} from 'mobx'
+interface Application{
+    id:string,
+    title: string,
+    description: string,
+    email: string,
+    date: string,
+    status:string,
+    object: object,
+    file: string
+  
+  }
 class AppStore{
 
-    private _applications: object[];
+    private _applications: Application[];
     private _meta: object;
 
 
@@ -10,11 +21,11 @@ class AppStore{
         makeAutoObservable(this)
     }
 
-    public getApplications(){
+    public getApplications():Application[]{
         return this._applications;
     }
 
-    public setApplications(applications: object[]){
+    public setApplications(applications: Application[]){
         this._applications = applications;
     }
 

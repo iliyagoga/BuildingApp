@@ -3,17 +3,18 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
 import { Button, FormControl, FormLabel, InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField, Typography } from "@mui/material";
 import AppStore from "../utils/stores/AppStore.ts";
 import { Link } from "react-router-dom";
+import React from "react";
 const Applications = observer(()=>{
 
-  const [orderBy, setOrderBy]= useState(null)
-  const [order,setOrder]= useState('asc')
-  const orderFunction =(value)=>{
+  const [orderBy, setOrderBy]= useState<string|null>(null)
+  const [order,setOrder]= useState<"asc"|"desc"|undefined>('asc')
+  const orderFunction =(value:string)=>{
    setOrderBy(value)
       if(order=="asc"){
         setOrder('desc')
@@ -42,13 +43,13 @@ const Applications = observer(()=>{
     API.getApplications()
   },[])
 
-  const [fId,setFID]=useState(null)
-  const [fTitle, setFTitle]=useState(null)
-  const [fDescr,setFDescr]=useState(null)
-  const [fEmail, setFEmail]=useState(null)
-  const [fDate,setFDate]=useState(null)
-  const [fStatus,setFStatus]=useState(null)
-  const [fObject,setDObject]=useState(null)
+  const [fId,setFID]=useState<string>("")
+  const [fTitle, setFTitle]=useState<string>("")
+  const [fDescr,setFDescr]=useState<string>("")
+  const [fEmail, setFEmail]=useState<string>("")
+  const [fDate,setFDate]=useState<string>("")
+  const [fStatus,setFStatus]=useState<string>("")
+  const [fObject,setDObject]=useState<string>("")
 
     return   <TableContainer component={Paper} sx={{mt:"1rem", height:"max-content"}}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
@@ -58,21 +59,21 @@ const Applications = observer(()=>{
           <TextField
           label="ID"
           value={fId}
-          onChange={(e)=>{setFID(e.target.value)}}>
+          onChange={(e: ChangeEvent<HTMLInputElement> )=>{setFID(e.target.value)}}>
           </TextField>
         </TableCell>
         <TableCell >
           <TextField
           label="Название"
           value={fTitle}
-          onChange={(e)=>{setFTitle(e.target.value)}}>
+          onChange={(e: ChangeEvent<HTMLInputElement>)=>{setFTitle(e.target.value)}}>
           </TextField>
         </TableCell>
         <TableCell >
           <TextField
           label="Описание"
           value={fDescr}
-          onChange={(e)=>{setFDescr(e.target.value)}}
+          onChange={(e: ChangeEvent<HTMLInputElement>)=>{setFDescr(e.target.value)}}
           >
           </TextField>
         </TableCell>
@@ -80,7 +81,7 @@ const Applications = observer(()=>{
           <TextField
           label="Почта"
           value={fEmail}
-          onChange={(e)=>{setFEmail(e.target.value)}}
+          onChange={(e: ChangeEvent<HTMLInputElement>)=>{setFEmail(e.target.value)}}
           >
           </TextField>
         </TableCell>
@@ -88,7 +89,7 @@ const Applications = observer(()=>{
           <TextField
           label="Дата"
           value={fDate}
-          onChange={(e)=>{setFDate(e.target.value)}}
+          onChange={(e: ChangeEvent<HTMLInputElement>)=>{setFDate(e.target.value)}}
           >
           </TextField>
         </TableCell>
@@ -224,7 +225,7 @@ const Applications = observer(()=>{
                     </MenuItem>
                 </Select>
             </TableCell>
-            <TableCell >{el.object.title}</TableCell>
+            <TableCell >{el.object['title']}</TableCell>
             <TableCell >{el.file?<a target="_blank" href={el.file}>{el.file.substring(0,10)}...</a>:<Typography>Нет</Typography>}</TableCell>
           </TableRow>
           }

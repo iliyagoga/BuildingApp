@@ -8,11 +8,12 @@ import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
 import { Button, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField } from "@mui/material";
 import ObjectsStore from "../utils/stores/ObjectsStore.ts";
+import React from "react";
 const Objects = observer(()=>{
-  const [orderBy, setOrderBy]= useState(null)
-  const [order,setOrder]= useState('asc')
+  const [orderBy, setOrderBy]= useState<string|null>(null)
+  const [order,setOrder]= useState<"asc"|"desc"|undefined>('asc')
 
-  const orderFunction =(value)=>{
+  const orderFunction =(value:string)=>{
     setOrderBy(value)
     if(order=="asc"){
       setOrder('desc')
@@ -32,7 +33,7 @@ const Objects = observer(()=>{
     });
   }
 
-  const [page,setPage]=useState(1)
+  const [page,setPage]=useState<number>(1)
   const handleChange = (event, value) => {
     setPage(value);
   };
@@ -41,11 +42,11 @@ const Objects = observer(()=>{
     API.getObjects()
   },[])
 
-  const [fId,setFID]=useState(null)
-  const [fTitle, setFTitle]=useState(null)
-  const [fAddress,setFAddress]=useState(null)
-  const [fDate,setFDate]=useState(null)
-  const [fCount,setFCount]=useState(null)
+  const [fId,setFID]=useState<string>("")
+  const [fTitle, setFTitle]=useState<string>("")
+  const [fAddress,setFAddress]=useState<string>("")
+  const [fDate,setFDate]=useState<string>("")
+  const [fCount,setFCount]=useState<string>("")
 
     return   <TableContainer component={Paper} sx={{mt:"1rem", height:"max-content"}}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">

@@ -1,7 +1,14 @@
 import {makeAutoObservable} from 'mobx'
+interface Objects{
+    id:string,
+    title:string,
+    address:string,
+    date:string,
+    count:number
+}
 class ObjectsStore{
 
-    private _objects: object[];
+    private _objects: Objects[];
     private _meta: object;
 
 
@@ -14,7 +21,7 @@ class ObjectsStore{
         return this._objects;
     }
 
-    public setObjects(objects: object[]){
+    public setObjects(objects: Objects[]){
         this._objects = objects;
     }
 

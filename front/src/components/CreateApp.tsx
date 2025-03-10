@@ -1,25 +1,26 @@
 import { Box, Button, Card, Container, FormControl, FormHelperText, InputLabel, MenuItem, Pagination, Select, TextField, Typography } from "@mui/material";
 import { observer } from "mobx-react-lite";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import ObjectsStore from "../utils/stores/ObjectsStore.ts";
 import { useNavigate } from "react-router-dom";
 import routes from "../utils/routes.ts";
 import AppValidator from "../utils/validations/AppValidator.ts";
+import React from "react";
 
 const CreateApp = observer(()=>{
-    const [title, setTitle]=useState("")
-    const [description, setDescription]=useState("")
-    const [email, setEmail]=useState("")
-    const [date, setDate]=useState("")
-    const [select, setSelect]=useState("")
-    const [file, setFile]=useState(null)
+    const [title, setTitle]=useState<string>("")
+    const [description, setDescription]=useState<string>("")
+    const [email, setEmail]=useState<string>("")
+    const [date, setDate]=useState<string>("")
+    const [select, setSelect]=useState<string>("")
+    const [file, setFile]=useState<File|null>(null)
 
     const [page,setPage]=useState(1)
 
     const nav=useNavigate()
     const handleChange = (event, value) => {
-        API.getObjects(value);
+        API.getObjects();
         setPage(value);
     };
 
@@ -43,7 +44,7 @@ const CreateApp = observer(()=>{
         margin:"auto"
         }}
     >
-        <Typography level="h1" sx={{fontSize:"xl"}}>Заявка</Typography>
+        <Typography sx={{fontSize:"xl"}}>Заявка</Typography>
         <TextField 
         error={vTitle?true:false}
         helperText={vTitle&&"Не заполнено"}
@@ -71,10 +72,8 @@ const CreateApp = observer(()=>{
         label="Почта">
 
         </TextField>
-        
-        <InputLabel id="date">Дата подачи</InputLabel>
+        <InputLabel>Дата подачи</InputLabel>
         <TextField
-        labelId="date"
         error={vDate?true:false}
         helperText={vDate&&"Не заполнено"}
         value={date}
@@ -82,6 +81,7 @@ const CreateApp = observer(()=>{
         type="date"
         >
         </TextField>
+  
         <FormControl>
             <InputLabel id="select">Объект</InputLabel>
             <Select
@@ -108,9 +108,8 @@ const CreateApp = observer(()=>{
 
             <InputLabel id="file">Загрузить файл</InputLabel>
             <TextField
-            onChange={(e)=>{
+            onChange={(e:ChangeEvent<HTMLInputElement>)=>{
                 setFile(e.target.files[0])}}
-            labelId="file"
             type="file"
             inputProps={{accept: '.jpg, .jpeg, .png'}}
             >
