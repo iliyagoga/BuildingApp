@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import routes from "../utils/routes.ts";
 import { useEffect, useState } from "react";
 import API from "../utils/API.ts";
+import React from "react";
 
 const User =observer(()=>{
     const [auth, setAuth]=useState(false)

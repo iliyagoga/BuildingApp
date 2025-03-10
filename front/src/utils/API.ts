@@ -86,31 +86,13 @@ class Api {
 
     public async createApplication(title:string, description: string, email: string, date:string, object: string, file: File|null){
         try {
-           if(file){
-            const formdata = new FormData();
-            formdata.append('file',file);
-            const upload = await axios.post(this.hostName+list.upload,formdata
+            let upload="";
+            if(file){
+                const formdata = new FormData();
+                formdata.append('file',file);
+                upload = await axios.post(this.hostName+list.upload,formdata
             )
-            if(upload.status>200 && upload.status<300){
-                const res = await axios.post(this.hostName+list.applications, {
-                    title,
-                    description,
-                    email,
-                    date,
-                    status:"added",
-                    object_id:object,
-                    file: upload.data.url
-                })
-                if (res.status>=200 && res.status<300){
-                    const link=Math.random().toString(36).substring(2, 12);
-                    await axios.post(this.hostName+list.links,{
-                        link,
-                        app_id: res.data.id
-                    })
-                    return link;
-                }
-            }
-           }else{
+             }
             const res = await axios.post(this.hostName+list.applications, {
                 title,
                 description,
@@ -118,9 +100,8 @@ class Api {
                 date,
                 status:"added",
                 object_id:object,
-                file: ""
+                file: upload
             })
-            if (res.status>=200 && res.status<300){
                 const link=Math.random().toString(36).substring(2, 12);
                 await axios.post(this.hostName+list.links,{
                     link,
@@ -133,15 +114,13 @@ class Api {
                 }
                
                 return link;
-            }
-           }
             
         } catch (error) {
             
         }
     }
 
-    public async getApplicationByLink(link:string){
+    public async getApplicationByLink(link:string|undefined){
         try {
             const res = await axios.get(this.hostName+list.links+'?link='+link);
             const app= await axios.get(this.hostName+ list.applications+"/"+res.data[0].app_id+"?_relations=objects")
@@ -178,7 +157,6 @@ class Api {
                 let apps:any=[]
                 const regex = new RegExp(`^${object}.*`)
                 for(let elem of res.data){
-                    console.log(elem)
                     if(regex.test(elem.object.title)){
                         apps.push(elem)
                     }

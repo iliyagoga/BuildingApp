@@ -4,12 +4,14 @@ import { useHref, useParams } from "react-router-dom";
 import API from "../utils/API.ts";
 import { Alert, Card, Container, MenuItem, Paper, Select, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import routes from "../utils/routes.ts";
+import React from "react";
+import ApplicationAble from "../utils/interfaces/ApplicationInAble.ts";
 const Link = observer(()=>{
     const params= useParams()
-    const [data,setData]=useState(undefined)
+    const [data,setData]=useState<ApplicationAble|undefined>(undefined)
 
     const [alert,setAlert] =useState(false)
-    const link = params.link
+    const link:string|undefined = params.link
     useEffect(()=>{
         API.getApplicationByLink(link).then(res=>{
             setData(res)
@@ -43,10 +45,9 @@ const Link = observer(()=>{
                         <MenuItem value="closed">Закрыта</MenuItem>
                     </Select>
                     </TableCell>
-                <TableCell >{data.object.title}</TableCell>
+                <TableCell >{data.object['title']}</TableCell>
                 <TableCell >{data.file?<a target="_blank" href={data.file}>{data.file.substring(0,10)}...</a>:<Typography>Нет</Typography>}</TableCell>
             </>}
-            
             </TableRow>
             
         </TableBody>

@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import routes from "../utils/routes.ts";
 import Applications from "../components/Applications.tsx";
 import Button from "../components/styled/Button.tsx";
-const Manager=observer(({mode})=>{
+import React from "react";
+const Manager=observer((mode:string)=>{
     const nav= useNavigate()
     return <>
     <AppBar sx={{position:"static"}} component={Paper}>

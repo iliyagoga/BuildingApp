@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom"
 import routes from "./utils/routes.ts"
-import Manager from "./pages/Manager.jsx"
-import User from "./pages/User.jsx"
-import Link from "./pages/Link.jsx"
-import Register from "./pages/Register.jsx"
-import Login from "./pages/Login.jsx"
-import Profile from "./pages/Profile.jsx"
+import Manager from "./pages/Manager.tsx"
+import User from "./pages/User.tsx"
+import Link from "./pages/Link.tsx"
+import Register from "./pages/Register.tsx"
+import Login from "./pages/Login.tsx"
+import Profile from "./pages/Profile.tsx"
 const Router = ()=>{
     return <Routes>
         <Route 

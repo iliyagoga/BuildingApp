@@ -7,6 +7,7 @@ import API from "../utils/API.ts";
 import routes from "../utils/routes.ts";
 import list from "../utils/apiLIst.ts";
 import AuthValidator from "../utils/validations/AuthValidator.ts";
+import React from "react";
 const Login = observer(()=>{
     const [email, setEmail]=useState("")
     const [pass, setPass]=useState("")
