@@ -6,15 +6,15 @@ import { useNavigate } from "react-router-dom";
 import API from "../utils/API.ts";
 import routes from "../utils/routes.ts";
 import list from "../utils/apiLIst.ts";
-import AuthValidator from "../utils/validations/AuthValidator.ts";
+import {valPassword,valEmail, loginValidator} from "../utils/validations/AuthValidator.ts"
 import React from "react";
 const Login = observer(()=>{
-    const [email, setEmail]=useState("")
-    const [pass, setPass]=useState("")
-    const [error, setError]=useState(false)
+    const [email, setEmail]=useState<string>("")
+    const [pass, setPass]=useState<string>("")
+    const [error, setError]=useState<string|boolean>(false)
 
-    const [vEmail, setVEmail]=useState(false)
-    const [vPass, setVPass]=useState(false)
+    const [vEmail, setVEmail]=useState<string|boolean>(false)
+    const [vPass, setVPass]=useState<string|boolean>(false)
     const nav = useNavigate()
     return <Paper
         sx={{
@@ -30,6 +30,7 @@ const Login = observer(()=>{
             value={email}
             onChange={(e)=>{
                 setEmail(e.target.value)
+                setVEmail(valEmail(e.target.value))
             }}
             label="Почта"
             error={vEmail?true:false}
@@ -39,6 +40,7 @@ const Login = observer(()=>{
             value={pass}
             onChange={(e)=>{
                 setPass(e.target.value)
+                setVPass(valPassword(e.target.value))
             }}
             type="password"
             label="Пароль"
@@ -46,7 +48,7 @@ const Login = observer(()=>{
             helperText={vPass&&vPass}
         ></TextField>
         <Button onClick={()=>{
-            const errors=AuthValidator(email, pass);
+            const errors=loginValidator(email, pass);
             if(errors===false){
                 API.login(email,pass).then(()=>{nav(routes.user.mean)}).catch(error=>{
                     setError(error.message)
@@ -70,7 +72,7 @@ const Login = observer(()=>{
                }
                     
             }
-            
+         
         }}>Войти</Button>
         {error&&
              <Alert 

@@ -6,9 +6,10 @@ import '@fontsource/roboto/700.css';
 import { useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
-import { Button, Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField } from "@mui/material";
+import {Pagination, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField } from "@mui/material";
 import ObjectsStore from "../utils/stores/ObjectsStore.ts";
 import React from "react";
+import Button from "./styled/Button.tsx";
 const Objects = observer(()=>{
   const [orderBy, setOrderBy]= useState<string|null>(null)
   const [order,setOrder]= useState<"asc"|"desc"|undefined>('asc')
@@ -92,7 +93,7 @@ const Objects = observer(()=>{
           </TextField>
         </TableCell>
         <TableCell >
-          <Button onClick={()=>{
+          <Button  variant ={"contained"} onClick={()=>{
             setPage(1)
             API.getObjectsByFilter(fId,fTitle,fAddress, fDate,  fCount)
           }}>Поиск</Button>

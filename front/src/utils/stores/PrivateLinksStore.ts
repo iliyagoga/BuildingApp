@@ -1,7 +1,8 @@
 import { makeAutoObservable } from "mobx";
+import LinkAble from "../interfaces/LinkAble";
 
 class PrivateLinksStore{
-    private _links: object[]=[];
+    private _links: LinkAble[]=[];
     constructor(){
             makeAutoObservable(this)
     }
@@ -10,7 +11,7 @@ class PrivateLinksStore{
         return this._links;
     }
 
-    public setLinks(links:object[]){
+    public setLinks(links:LinkAble[]){
         this._links=links;
     }
     

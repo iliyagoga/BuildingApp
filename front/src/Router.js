@@ -6,7 +6,13 @@ import Link from "./pages/Link.tsx"
 import Register from "./pages/Register.tsx"
 import Login from "./pages/Login.tsx"
 import Profile from "./pages/Profile.tsx"
+import { useEffect, useState } from "react"
+import API from "./utils/API.ts"
 const Router = ()=>{
+    const [auth, setAuth]=useState(undefined)
+    useEffect(()=>{
+        API.checkUser().then((e)=>{setAuth(e)}).catch(e=>{setAuth(false)})
+    },[])
     return <Routes>
         <Route 
             path={routes.manager.mean}
@@ -25,7 +31,7 @@ const Router = ()=>{
         </Route>
         <Route
             path={routes.user.mean}
-            element={<User></User>}
+            element={<User auth={auth}></User>}
         >
         </Route>
         <Route
@@ -45,12 +51,13 @@ const Router = ()=>{
             element={<Login></Login>}
         >
         </Route>
-
-        <Route
-            path={routes.user.applications}
-            element={<Profile></Profile>}
-        >
-        </Route>
+        {(auth!=undefined && auth)&&
+          <Route
+          path={routes.user.applications}
+          element={<Profile email={auth}></Profile>}
+      >
+      </Route>}
+      
 
   
     </Routes>

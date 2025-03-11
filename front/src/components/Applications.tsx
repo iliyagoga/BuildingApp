@@ -6,10 +6,10 @@ import '@fontsource/roboto/700.css';
 import { ChangeEvent, useEffect, useState } from "react";
 import API from "../utils/API.ts";
 import Paper from '@mui/material/Paper';
-import { Button, FormControl, FormLabel, InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField, Typography } from "@mui/material";
+import {FormControl,  InputLabel, MenuItem, Pagination, Select, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel, TextField, Typography } from "@mui/material";
 import AppStore from "../utils/stores/AppStore.ts";
-import { Link } from "react-router-dom";
 import React from "react";
+import Button from "./styled/Button.tsx";
 const Applications = observer(()=>{
 
   const [orderBy, setOrderBy]= useState<string|null>(null)
@@ -124,7 +124,7 @@ const Applications = observer(()=>{
           </TextField>
         </TableCell>
         <TableCell >
-          <Button onClick={()=>{
+          <Button variant ={"contained"} onClick={()=>{
             setPage(1)
             API.getApplicationsByFilter(fId,fTitle,fDescr,fEmail, fDate, fStatus, fObject)
           }}>Поиск</Button>

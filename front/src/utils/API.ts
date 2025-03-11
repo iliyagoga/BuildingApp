@@ -100,19 +100,20 @@ class Api {
                 date,
                 status:"added",
                 object_id:object,
-                file: upload
+                file: upload['url']
             })
                 const link=Math.random().toString(36).substring(2, 12);
                 await axios.post(this.hostName+list.links,{
                     link,
                     app_id: res.data.id
                 })
-                const check=await this.checkUser();
-                if(check){
-                    const token=(getCookie('token'))
+                const token=(getCookie('token'))
+                if(token!=undefined){
+                    const check=await this.checkUser();
                     await axios.post(this.hostName+list.applications_users,{email:check, link_id:res.data.id},{headers:{Authorization:"Bearer "+token}})
                 }
-               
+             
+
                 return link;
             
         } catch (error) {

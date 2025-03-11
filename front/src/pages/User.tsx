@@ -1,35 +1,12 @@
 import { observer } from "mobx-react-lite";
 import CreateApp from "../components/CreateApp.tsx";
-import { Box, Paper, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import routes from "../utils/routes.ts";
-import { useEffect, useState } from "react";
-import API from "../utils/API.ts";
 import React from "react";
+import LinkStyled from "../components/styled/LinkStyled.tsx";
 
-const User =observer(()=>{
-    const [auth, setAuth]=useState(false)
-    useEffect(()=>{
-        API.checkUser().then((e)=>{
-            if(e){
-                setAuth(true)
-            }
-            else{
-                setAuth(false)
-            }
-
-            }).catch(e=>{
-                if(e){
-                    setAuth(true)
-                }
-                else{
-                    setAuth(false)
-                }
-            })
-    },[])
+const User =observer((auth:string|boolean)=>{
     return <>
-          {auth&&<Typography><Link to={routes.user.applications}>Мои ссылки</Link></Typography>}
-          <CreateApp></CreateApp>
+        {auth&& <LinkStyled></LinkStyled>}
+        <CreateApp></CreateApp>
     </>
   
 
